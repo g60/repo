@@ -1102,7 +1102,18 @@ namespace Car_Price_Guider
             //textBox8.Text = @"Ford Fiesta 2009 1.6 Zetec S Price Guide   Honest John.htm";
             //string fullFileName = Path.Combine(workingDir, textBox8.Text);
 
+            openFileDialog1.Title = "Choose saved Bawtry web page";
+            openFileDialog1.InitialDirectory = ".";
+            openFileDialog1.FileName = "";
+            openFileDialog1.Multiselect = false;
 
+            DialogResult dr = openFileDialog1.ShowDialog(this);
+            if (dr != DialogResult.OK)
+            {
+                return;
+            }
+
+            fullFileName = openFileDialog1.FileName;
 
             List<CarDetails> carDetails = AuctionCatalogueParser_Bawtry.ParseCatalogue_StoredFile(fullFileName);
             carDetailsToProcess.AddRange(carDetails.ToArray());
@@ -1112,8 +1123,9 @@ namespace Car_Price_Guider
                 textBox9.AppendText("*****************************************" + System.Environment.NewLine);
                 foreach (var prop in currCar.GetType().GetProperties())
                 {
-                    textBox9.AppendText(String.Format("{0}={1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
+                    textBox9.AppendText(String.Format("{0} = {1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
                 } // end foreach
+                textBox9.AppendText(currCar.FormatForValuation_CAP_Email() + System.Environment.NewLine);
                 textBox9.AppendText("*****************************************" + System.Environment.NewLine);
             } // end foreach
 
@@ -1272,6 +1284,51 @@ namespace Car_Price_Guider
                 txtbox_HJoutput.AppendText(carPrices.AllPriceText + System.Environment.NewLine);
                 txtbox_HJoutput.AppendText("*****************************************" + System.Environment.NewLine);
             }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        private void button9_Click_1(object sender, EventArgs e)
+        {
+            string workingDir = @"D:\Users\David\Documents\Stuff To Keep Synced\Visual Studio 2010\Projects\Car Price Guider(2)\Sample Pages\";
+            //workingDir = txtBox_SamplePageDir.Text;
+
+            string fullFileName = Path.Combine(workingDir, "Wednesday Auction, 22 05 2013   Bawtry Motor Auction Remarketing.htm");
+            //textBox8.Text = @"Ford Fiesta 2009 1.6 Zetec S Price Guide   Honest John.htm";
+            //string fullFileName = Path.Combine(workingDir, textBox8.Text);
+
+            openFileDialog1.InitialDirectory = ".";
+            openFileDialog1.FileName = "";
+            openFileDialog1.Multiselect = false;
+
+            DialogResult dr = openFileDialog1.ShowDialog(this);
+            if (dr != DialogResult.OK)
+            {
+                return;
+            }
+
+            fullFileName = openFileDialog1.FileName;
+
+            List<CarDetails> carDetails = AuctionCatalogueParser_Bawtry.ParseCatalogue_StoredFile_PATHTESTER(fullFileName, textBox11.Text);
+            carDetailsToProcess.AddRange(carDetails.ToArray());
+
+            foreach (var currCar in carDetailsToProcess)
+            {
+                textBox9.AppendText("*****************************************" + System.Environment.NewLine);
+                foreach (var prop in currCar.GetType().GetProperties())
+                {
+                    textBox9.AppendText(String.Format("{0}={1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
+                } // end foreach
+                textBox9.AppendText("*****************************************" + System.Environment.NewLine);
+            } // end foreach
         }
 
     }

@@ -28,7 +28,7 @@ namespace Car_Price_Guider
 
                 //string test = valuer.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[999]/td[2]");
 
-                for (int i = 1; i < 9; i+=2)
+                for (int i = 2; i < 999; i+=2)
                 {
 
                     string carDetail = parser.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[" + i + "]/td[2]");
@@ -163,6 +163,54 @@ namespace Car_Price_Guider
             return returnDetails;
 
         }
+
+
+
+
+
+        public static List<CarDetails> ParseCatalogue_StoredFile_PATHTESTER(string FileName, string XPath)
+        {
+
+            AuctionCatalogueParser_Bawtry parser = new AuctionCatalogueParser_Bawtry();
+
+            List<CarDetails> returnDetails = new List<CarDetails>();
+
+            var req1 = (FileWebRequest)WebRequest.Create(FileName);
+            req1.Method = "GET";
+
+            using (WebResponse odpoved = req1.GetResponse())
+            {
+                var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+                htmlDoc.Load(odpoved.GetResponseStream());
+
+                //string test = valuer.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[999]/td[2]");
+
+                //for (int i = 1; i < 999; i += 2)
+                //{
+
+                    //string carDetail = parser.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[" + i + "]/td[2]");
+                    string carDetail = parser.GetPathText(htmlDoc, XPath);
+
+                    if (carDetail != null)
+                    {
+                        Console.WriteLine("*********************************");
+                        Console.WriteLine(carDetail);
+                        Console.WriteLine("*********************************");
+
+                    } // end if
+
+                //}
+
+            }
+
+            return returnDetails;
+
+        }
+
+
+
+
+
 
         private string GetPathText(HtmlAgilityPack.HtmlDocument htmlDoc, string xPath)
         {

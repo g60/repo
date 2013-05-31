@@ -24,7 +24,7 @@ namespace Car_Price_Guider
         /// <summary>
         /// Opens the spreadsheet ready for reading
         /// </summary>
-        public Excel.Worksheet OpenSpreadsheet()
+        public void OpenSpreadsheet()
         {
             try
             {
@@ -91,7 +91,7 @@ namespace Car_Price_Guider
 
             try {
 
-                ExcelObj = new Excel.Application();#
+                ExcelObj = new Excel.Application();
 
                 theWorkbook = ExcelObj.Workbooks.Open(FileName, 0, true, 5, "", "", true, Excel.XlPlatform.xlWindows, "\t", false, false, 0, true);
                 

@@ -19,5 +19,10 @@ namespace Car_Price_Guider
             return RegDate.Year + " " + Long_Description;
         }
 
+        public string FormatForValuation_CAP_Email()
+        {
+            return "value " + RegNo;
+        }
+
     }
 }
