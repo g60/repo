@@ -14,7 +14,7 @@ namespace Car_Price_Guider
         public static List<CarDetails> ParseCatalogue_StoredFile(string FileName)
         {
 
-            AuctionCatalogueParser_Bawtry valuer = new AuctionCatalogueParser_Bawtry();
+            AuctionCatalogueParser_Bawtry parser = new AuctionCatalogueParser_Bawtry();
 
             List<CarDetails> returnDetails = new List<CarDetails>();
 
@@ -26,16 +26,12 @@ namespace Car_Price_Guider
                 var htmlDoc = new HtmlAgilityPack.HtmlDocument();
                 htmlDoc.Load(odpoved.GetResponseStream());
 
-
                 //string test = valuer.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[999]/td[2]");
 
-                //Console.WriteLine(test);
-
-                
                 for (int i = 1; i < 9; i+=2)
                 {
 
-                    string carDetail = valuer.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[" + i + "]/td[2]");
+                    string carDetail = parser.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[" + i + "]/td[2]");
 
                     if (carDetail != null)
                     {
@@ -85,7 +81,7 @@ namespace Car_Price_Guider
                             newCar.RegDate = RegDate;
                         }
 
-                        string lotNo = valuer.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[" + i + "]/td[4]");
+                        string lotNo = parser.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[" + i + "]/td[4]");
                         
                         newCar.Lot_Number = lotNo;
 
