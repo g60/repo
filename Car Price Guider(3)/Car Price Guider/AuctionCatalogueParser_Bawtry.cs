@@ -64,11 +64,12 @@ namespace Car_Price_Guider
                                 else
                                 {
                                     throw new Exception("Unexpected detail line");
-                                }
-                            }
-                        }
+                                } // end if-then-else
+                            } // end if
+                        } // end for
 
                         CarDetails newCar = new CarDetails();
+                        newCar.FromCatalogue = "BAWTRY";
                         newCar.Long_Description = longDesc1 + " " + longDesc2;
 
                         registered_raw = registered_raw.Replace("Registered", "");
@@ -79,7 +80,7 @@ namespace Car_Price_Guider
                         if (DateTime.TryParse(registered_raw, out RegDate))
                         {
                             newCar.RegDate = RegDate;
-                        }
+                        } // end if
 
                         string lotNo = parser.GetPathText(htmlDoc, "//*[@id=\"content\"]/table/tbody/tr[" + i + "]/td[4]");
                         

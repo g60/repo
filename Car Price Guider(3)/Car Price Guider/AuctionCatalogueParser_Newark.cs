@@ -99,8 +99,8 @@ namespace Car_Price_Guider
 
                 Excel.Worksheet catalogueWorksheet = (Excel.Worksheet)sheets.get_Item(1);
 
-            
 
+                const int C_COL_NUM__LOT = 2; // B
                 const int C_COL_NUM__MAKE = 4; // D
                 const int C_COL_NUM__MODEL = 6; // F
                 const int C_COL_NUM__TYPE = 7; // G
@@ -119,20 +119,39 @@ namespace Car_Price_Guider
                 // loop through each depot row
                 for (int rowIndex = 1; rowIndex <= range.Cells.Rows.Count; rowIndex++)
                 {
-                    Console.WriteLine("**********************************");
-                    Console.WriteLine("MAKE:" + (myvalues.GetValue(rowIndex, C_COL_NUM__MAKE) ?? "").ToString().Trim());
-                    Console.WriteLine("MODEL:" + (myvalues.GetValue(rowIndex, C_COL_NUM__MODEL) ?? "").ToString().Trim());
-                    Console.WriteLine("TYPE:" + (myvalues.GetValue(rowIndex, C_COL_NUM__TYPE) ?? "").ToString().Trim());
-                    Console.WriteLine("REGDATE:" + (myvalues.GetValue(rowIndex, C_COL_NUM__REGISTERED) ?? "").ToString().Trim());
-                    Console.WriteLine("FUEL:" + (myvalues.GetValue(rowIndex, C_COL_NUM__FUEL) ?? "").ToString().Trim());
-                    Console.WriteLine("TRANS:" + (myvalues.GetValue(rowIndex, C_COL_NUM__TRANS) ?? "").ToString().Trim());
-                    Console.WriteLine("DOORS:" + (myvalues.GetValue(rowIndex, C_COL_NUM__DOORS) ?? "").ToString().Trim());
-                    Console.WriteLine("MILES:" + (myvalues.GetValue(rowIndex, C_COL_NUM__MILES) ?? "").ToString().Trim());
-                    Console.WriteLine("**********************************");
+                    //Console.WriteLine("**********************************");
+                    //Console.WriteLine("MAKE:" + (myvalues.GetValue(rowIndex, C_COL_NUM__MAKE) ?? "").ToString().Trim());
+                    //Console.WriteLine("MODEL:" + (myvalues.GetValue(rowIndex, C_COL_NUM__MODEL) ?? "").ToString().Trim());
+                    //Console.WriteLine("TYPE:" + (myvalues.GetValue(rowIndex, C_COL_NUM__TYPE) ?? "").ToString().Trim());
+                    //Console.WriteLine("REGDATE:" + (myvalues.GetValue(rowIndex, C_COL_NUM__REGISTERED) ?? "").ToString().Trim());
+                    //Console.WriteLine("FUEL:" + (myvalues.GetValue(rowIndex, C_COL_NUM__FUEL) ?? "").ToString().Trim());
+                    //Console.WriteLine("TRANS:" + (myvalues.GetValue(rowIndex, C_COL_NUM__TRANS) ?? "").ToString().Trim());
+                    //Console.WriteLine("DOORS:" + (myvalues.GetValue(rowIndex, C_COL_NUM__DOORS) ?? "").ToString().Trim());
+                    //Console.WriteLine("MILES:" + (myvalues.GetValue(rowIndex, C_COL_NUM__MILES) ?? "").ToString().Trim());
+                    //Console.WriteLine("**********************************");
 
                     CarDetails newCar = new CarDetails();
-                    newCar.Make = (myvalues.GetValue(rowIndex, C_COL_NUM__MAKE) ?? "").ToString().Trim();
+                    newCar.FromCatalogue = "NEWARK";
 
+                    newCar.Lot_Number = (myvalues.GetValue(rowIndex, C_COL_NUM__LOT) ?? "").ToString().Trim();
+                    newCar.Make = (myvalues.GetValue(rowIndex, C_COL_NUM__MAKE) ?? "").ToString().Trim();
+                    newCar.Model = (myvalues.GetValue(rowIndex, C_COL_NUM__MODEL) ?? "").ToString().Trim();
+
+                    newCar.Type = (myvalues.GetValue(rowIndex, C_COL_NUM__TYPE) ?? "").ToString().Trim();
+                    
+                    DateTime regDate;
+
+                    if (DateTime.TryParse((myvalues.GetValue(rowIndex, C_COL_NUM__REGISTERED) ?? "").ToString().Trim(), out regDate))
+                    {
+                        newCar.RegDate = regDate;
+                    } // end if
+
+                    newCar.Fuel = (myvalues.GetValue(rowIndex, C_COL_NUM__FUEL) ?? "").ToString().Trim();
+                    newCar.Trans = (myvalues.GetValue(rowIndex, C_COL_NUM__TRANS) ?? "").ToString().Trim();
+                    newCar.Doors = (myvalues.GetValue(rowIndex, C_COL_NUM__DOORS) ?? "").ToString().Trim();
+                    newCar.Mileage = (myvalues.GetValue(rowIndex, C_COL_NUM__MILES) ?? "").ToString().Trim();
+
+                    returnDetails.Add(newCar);
 
                 } // end for
 

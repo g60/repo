@@ -1093,8 +1093,10 @@ namespace Car_Price_Guider
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btn_ProcessBawtryCatalogue_Click(object sender, EventArgs e)
+        private void btn_ProcessCatalogue_Bawtry_Click(object sender, EventArgs e)
         {
+            carDetailsToProcess.Clear();
+
             string workingDir = @"D:\Users\David\Documents\Stuff To Keep Synced\Visual Studio 2010\Projects\Car Price Guider(2)\Sample Pages\";
             //workingDir = txtBox_SamplePageDir.Text;
 
@@ -1111,7 +1113,7 @@ namespace Car_Price_Guider
             if (dr != DialogResult.OK)
             {
                 return;
-            }
+            } // end if
 
             fullFileName = openFileDialog1.FileName;
 
@@ -1120,13 +1122,14 @@ namespace Car_Price_Guider
 
             foreach (var currCar in carDetailsToProcess)
             {
-                textBox9.AppendText("*****************************************" + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
                 foreach (var prop in currCar.GetType().GetProperties())
                 {
-                    textBox9.AppendText(String.Format("{0} = {1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
+                    textBox_CarCatalogueResults_Bawtry.AppendText(String.Format("{0} = {1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
                 } // end foreach
-                textBox9.AppendText(currCar.FormatForValuation_CAP_Email() + System.Environment.NewLine);
-                textBox9.AppendText("*****************************************" + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText("Mileage = " + currCar.GetMileage() + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText(currCar.FormatForValuation_CAP_Email() + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
             } // end foreach
 
         }
@@ -1322,12 +1325,48 @@ namespace Car_Price_Guider
 
             foreach (var currCar in carDetailsToProcess)
             {
-                textBox9.AppendText("*****************************************" + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
                 foreach (var prop in currCar.GetType().GetProperties())
                 {
-                    textBox9.AppendText(String.Format("{0}={1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
+                    textBox_CarCatalogueResults_Bawtry.AppendText(String.Format("{0}={1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
                 } // end foreach
-                textBox9.AppendText("*****************************************" + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
+            } // end foreach
+        }
+
+        private void btn_ProcessCatalogue_Newark_Click(object sender, EventArgs e)
+        {
+            carDetailsToProcess.Clear();
+
+            openFileDialog1.Title = "Choose saved Newark export file";
+            openFileDialog1.InitialDirectory = ".";
+            openFileDialog1.FileName = "";
+            openFileDialog1.Multiselect = false;
+
+            DialogResult dr = openFileDialog1.ShowDialog(this);
+            if (dr != DialogResult.OK)
+            {
+                return;
+            } // end if
+
+            string fullFileName = openFileDialog1.FileName;
+
+            List<CarDetails> carDetails = AuctionCatalogueParser_Newark.ParseCatalogue_StoredFile(fullFileName);
+
+            //List<CarDetails> carDetails = AuctionCatalogueParser_Bawtry.ParseCatalogue_StoredFile(fullFileName);
+            carDetailsToProcess.AddRange(carDetails.ToArray());
+
+            foreach (var currCar in carDetailsToProcess)
+            {
+                textBox_CarCatalogueResults_Newark.AppendText("*****************************************" + System.Environment.NewLine);
+                foreach (var prop in currCar.GetType().GetProperties())
+                {
+                    textBox_CarCatalogueResults_Newark.AppendText(String.Format("{0} = {1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
+                } // end foreach
+                //textBox_CarCatalogueResults_Newark.AppendText("Long Description = " + currCar.Long_Description + System.Environment.NewLine);
+                //textBox_CarCatalogueResults_Newark.AppendText("Mileage = " + currCar.GetMileage() + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Newark.AppendText(currCar.FormatForValuation_CAP_Email() + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Newark.AppendText("*****************************************" + System.Environment.NewLine);
             } // end foreach
         }
 

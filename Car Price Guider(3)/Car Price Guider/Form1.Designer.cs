@@ -42,13 +42,15 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.button9 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.btn_ProcessBawtryCatalogue = new System.Windows.Forms.Button();
+            this.textBox_CarCatalogueResults_Bawtry = new System.Windows.Forms.TextBox();
+            this.btn_ProcessCatalogue_Bawtry = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btn_ProcessCatalogue_Newark = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.textBox_CarCatalogueResults_Newark = new System.Windows.Forms.TextBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -71,8 +73,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button9 = new System.Windows.Forms.Button();
-            this.textBox11 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -230,7 +230,7 @@
             this.tabPage2.Controls.Add(this.textBox11);
             this.tabPage2.Controls.Add(this.button9);
             this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Controls.Add(this.btn_ProcessBawtryCatalogue);
+            this.tabPage2.Controls.Add(this.btn_ProcessCatalogue_Bawtry);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -239,12 +239,33 @@
             this.tabPage2.Text = "Bawtry Parser";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // textBox11
+            // 
+            this.textBox11.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox11.Location = new System.Drawing.Point(11, 102);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(489, 20);
+            this.textBox11.TabIndex = 3;
+            this.textBox11.Text = "//*[@id=\"content\"]/table/tbody/tr[1]/td[2]";
+            this.textBox11.Visible = false;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(8, 73);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(83, 23);
+            this.button9.TabIndex = 2;
+            this.button9.Text = "button9";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Visible = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click_1);
+            // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.textBox9);
+            this.groupBox3.Controls.Add(this.textBox_CarCatalogueResults_Bawtry);
             this.groupBox3.Location = new System.Drawing.Point(8, 149);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(495, 240);
@@ -252,29 +273,29 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Valuations";
             // 
-            // textBox9
+            // textBox_CarCatalogueResults_Bawtry
             // 
-            this.textBox9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox9.Location = new System.Drawing.Point(3, 16);
-            this.textBox9.Multiline = true;
-            this.textBox9.Name = "textBox9";
-            this.textBox9.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox9.Size = new System.Drawing.Size(489, 221);
-            this.textBox9.TabIndex = 0;
+            this.textBox_CarCatalogueResults_Bawtry.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox_CarCatalogueResults_Bawtry.Location = new System.Drawing.Point(3, 16);
+            this.textBox_CarCatalogueResults_Bawtry.Multiline = true;
+            this.textBox_CarCatalogueResults_Bawtry.Name = "textBox_CarCatalogueResults_Bawtry";
+            this.textBox_CarCatalogueResults_Bawtry.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox_CarCatalogueResults_Bawtry.Size = new System.Drawing.Size(489, 221);
+            this.textBox_CarCatalogueResults_Bawtry.TabIndex = 0;
             // 
-            // btn_ProcessBawtryCatalogue
+            // btn_ProcessCatalogue_Bawtry
             // 
-            this.btn_ProcessBawtryCatalogue.Location = new System.Drawing.Point(8, 6);
-            this.btn_ProcessBawtryCatalogue.Name = "btn_ProcessBawtryCatalogue";
-            this.btn_ProcessBawtryCatalogue.Size = new System.Drawing.Size(83, 63);
-            this.btn_ProcessBawtryCatalogue.TabIndex = 0;
-            this.btn_ProcessBawtryCatalogue.Text = "Process Bawtry Catalogue";
-            this.btn_ProcessBawtryCatalogue.UseVisualStyleBackColor = true;
-            this.btn_ProcessBawtryCatalogue.Click += new System.EventHandler(this.btn_ProcessBawtryCatalogue_Click);
+            this.btn_ProcessCatalogue_Bawtry.Location = new System.Drawing.Point(8, 6);
+            this.btn_ProcessCatalogue_Bawtry.Name = "btn_ProcessCatalogue_Bawtry";
+            this.btn_ProcessCatalogue_Bawtry.Size = new System.Drawing.Size(83, 63);
+            this.btn_ProcessCatalogue_Bawtry.TabIndex = 0;
+            this.btn_ProcessCatalogue_Bawtry.Text = "Process Bawtry Catalogue";
+            this.btn_ProcessCatalogue_Bawtry.UseVisualStyleBackColor = true;
+            this.btn_ProcessCatalogue_Bawtry.Click += new System.EventHandler(this.btn_ProcessCatalogue_Bawtry_Click);
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.button8);
+            this.tabPage4.Controls.Add(this.btn_ProcessCatalogue_Newark);
             this.tabPage4.Controls.Add(this.groupBox4);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -284,36 +305,38 @@
             this.tabPage4.Text = "Newark Parser";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // btn_ProcessCatalogue_Newark
             // 
-            this.button8.Location = new System.Drawing.Point(8, 6);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(83, 63);
-            this.button8.TabIndex = 3;
-            this.button8.Text = "Process Newark Catalogue";
-            this.button8.UseVisualStyleBackColor = true;
+            this.btn_ProcessCatalogue_Newark.Location = new System.Drawing.Point(8, 6);
+            this.btn_ProcessCatalogue_Newark.Name = "btn_ProcessCatalogue_Newark";
+            this.btn_ProcessCatalogue_Newark.Size = new System.Drawing.Size(83, 63);
+            this.btn_ProcessCatalogue_Newark.TabIndex = 3;
+            this.btn_ProcessCatalogue_Newark.Text = "Process Newark Catalogue";
+            this.btn_ProcessCatalogue_Newark.UseVisualStyleBackColor = true;
+            this.btn_ProcessCatalogue_Newark.Click += new System.EventHandler(this.btn_ProcessCatalogue_Newark_Click);
             // 
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.textBox10);
+            this.groupBox4.Controls.Add(this.textBox_CarCatalogueResults_Newark);
             this.groupBox4.Location = new System.Drawing.Point(8, 78);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(495, 240);
+            this.groupBox4.Size = new System.Drawing.Size(495, 313);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Valuations";
             // 
-            // textBox10
+            // textBox_CarCatalogueResults_Newark
             // 
-            this.textBox10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox10.Location = new System.Drawing.Point(3, 16);
-            this.textBox10.Multiline = true;
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(489, 221);
-            this.textBox10.TabIndex = 0;
+            this.textBox_CarCatalogueResults_Newark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox_CarCatalogueResults_Newark.Location = new System.Drawing.Point(3, 16);
+            this.textBox_CarCatalogueResults_Newark.Multiline = true;
+            this.textBox_CarCatalogueResults_Newark.Name = "textBox_CarCatalogueResults_Newark";
+            this.textBox_CarCatalogueResults_Newark.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBox_CarCatalogueResults_Newark.Size = new System.Drawing.Size(489, 294);
+            this.textBox_CarCatalogueResults_Newark.TabIndex = 0;
             // 
             // tabPage1
             // 
@@ -528,27 +551,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(11, 73);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 2;
-            this.button9.Text = "button9";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Visible = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click_1);
-            // 
-            // textBox11
-            // 
-            this.textBox11.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox11.Location = new System.Drawing.Point(11, 102);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(489, 20);
-            this.textBox11.TabIndex = 3;
-            this.textBox11.Text = "//*[@id=\"content\"]/table/tbody/tr[1]/td[2]";
-            this.textBox11.Visible = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -612,16 +614,16 @@
         private System.Windows.Forms.TextBox txtBox_SamplePageDir;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button btn_ProcessBawtryCatalogue;
+        private System.Windows.Forms.Button btn_ProcessCatalogue_Bawtry;
         private System.Windows.Forms.Button btn_GetCarValuations;
         private System.Windows.Forms.Button btn_ProcessSavedValuations;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBox_CarCatalogueResults_Bawtry;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button btn_ProcessCatalogue_Newark;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox textBox_CarCatalogueResults_Newark;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Button button9;
