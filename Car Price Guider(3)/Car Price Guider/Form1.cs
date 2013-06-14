@@ -1370,5 +1370,34 @@ namespace Car_Price_Guider
             } // end foreach
         }
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show(this, "This will create all emails and send automatically - are you sure?", "", MessageBoxButtons.OKCancel);
+            if (dr == System.Windows.Forms.DialogResult.No)
+            {
+                return;
+            }
+
+            int emailCounter = 0;
+
+            Microsoft.Office.Interop.Outlook.Application outlookApp = new Microsoft.Office.Interop.Outlook.Application();
+
+            foreach (var currCar in carDetailsToProcess)
+            {
+                Microsoft.Office.Interop.Outlook.MailItem mailItem = (Microsoft.Office.Interop.Outlook.MailItem)
+                outlookApp.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
+                mailItem.Subject = currCar.FormatForValuation_CAP_Email();
+                mailItem.To = "value@cap.co.uk";
+                mailItem.Body = currCar.Lot_Number + Environment.NewLine + currCar.Long_Description;
+                mailItem.Display(false);
+                Thread.Sleep(30000);
+                mailItem.Send();
+                emailCounter++;
+            } // end foreach
+
+            MessageBox.Show("Created " + emailCounter + " emails");
+
+        }
+
     }
 }
