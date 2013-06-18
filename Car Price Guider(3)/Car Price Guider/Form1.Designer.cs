@@ -42,6 +42,8 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -73,7 +75,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button8 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -228,6 +229,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button10);
             this.tabPage2.Controls.Add(this.button8);
             this.tabPage2.Controls.Add(this.textBox11);
             this.tabPage2.Controls.Add(this.button9);
@@ -240,6 +242,26 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bawtry Parser";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(308, 6);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(87, 63);
+            this.button10.TabIndex = 5;
+            this.button10.Text = "Create SS For Valuations";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(183, 6);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 63);
+            this.button8.TabIndex = 4;
+            this.button8.Text = "Create Emails";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // textBox11
             // 
@@ -553,16 +575,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(183, 6);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 63);
-            this.button8.TabIndex = 4;
-            this.button8.Text = "Create Emails";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -640,6 +652,7 @@
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button10;
     }
 }
 

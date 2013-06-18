@@ -50,12 +50,12 @@ namespace Car_Price_Guider
 
         }
 
-        public static CarValuation GetValuation_StoredFile(string FileName)
+        public static CarValuation_HonestJohn GetValuation_StoredFile(string FileName)
         {
 
             ValuationParser_HonestJohn valuer = new ValuationParser_HonestJohn();
 
-            CarValuation returnPrices = new CarValuation();
+            CarValuation_HonestJohn returnPrices = new CarValuation_HonestJohn();
 
             var req1 = (FileWebRequest)WebRequest.Create(FileName);
             req1.Method = "GET";
@@ -172,12 +172,12 @@ namespace Car_Price_Guider
         /// </summary>
         /// <param name="FileName"></param>
         /// <returns></returns>
-        public static CarValuation GetValuation_StoredFile1(string FileName)
+        public static CarValuation_HonestJohn GetValuation_StoredFile1(string FileName)
         {
 
             ValuationParser_HonestJohn valuer = new ValuationParser_HonestJohn();
 
-            CarValuation returnPrices = new CarValuation();
+            CarValuation_HonestJohn returnPrices = new CarValuation_HonestJohn();
 
             var req1 = (FileWebRequest)WebRequest.Create(FileName);
             req1.Method = "GET";

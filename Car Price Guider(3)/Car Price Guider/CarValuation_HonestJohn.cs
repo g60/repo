@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Car_Price_Guider
 {
-    class CarValuation
+    class CarValuation_HonestJohn
     {
 
         private string dealerMinPrice;
@@ -21,7 +21,7 @@ namespace Car_Price_Guider
         private string allPriceText;
 
         
-        public CarValuation()
+        public CarValuation_HonestJohn()
         {
 
         }

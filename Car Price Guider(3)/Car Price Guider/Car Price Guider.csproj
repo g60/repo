@@ -44,6 +44,7 @@
       <HintPath>.\Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,7 +59,8 @@
   <ItemGroup>
     <Compile Include="AuctionCatalogueParser_Newark.cs" />
     <Compile Include="CarDetails.cs" />
-    <Compile Include="CarValuation.cs" />
+    <Compile Include="CarValuation_CAP.cs" />
+    <Compile Include="CarValuation_HonestJohn.cs" />
     <Compile Include="AuctionCatalogueParser_Bawtry.cs" />
     <Compile Include="FolderSelectDialog.cs" />
     <Compile Include="Form1.cs">

@@ -13,6 +13,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using FolderSelect;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Car_Price_Guider
 {
@@ -286,13 +287,13 @@ namespace Car_Price_Guider
 
         }
 
-        private CarValuation ProcessFile(string fname)
+        private CarValuation_HonestJohn ProcessFile(string fname)
         {
             //string fname = "";
             //fname = "RENAULT CLIO DYNAMIQUE 16V - 1149cc 3dr Hatchback 2004 Petrol Manual.html";
             //fname = "TOYOTA AVENSIS COLOUR CTION VVTI - 1794cc 5dr Hatchback 2006 Petrol Manual.html";
 
-            CarValuation returnPrices = new CarValuation();
+            CarValuation_HonestJohn returnPrices = new CarValuation_HonestJohn();
 
             var req1 = (FileWebRequest)WebRequest.Create(fname);
             req1.Method = "GET";
@@ -562,7 +563,7 @@ namespace Car_Price_Guider
                         
                         // process the saved page
 
-                        CarValuation carPrices = this.ProcessFile(fullFileName);
+                        CarValuation_HonestJohn carPrices = this.ProcessFile(fullFileName);
 
                         /////////////////////////////////////////////
                         // NOW SAVE THE FOUND VALUES BACK TO THE SS
@@ -652,7 +653,7 @@ namespace Car_Price_Guider
 
             string fullFileName = Path.Combine(workingDir, "2003 SUBARU IMPREZA GX SPORT AWD - 1994cc 4dr Saloon Petrol Manual" + ".html");
 
-            CarValuation carPrices = this.ProcessFile1(fullFileName);
+            CarValuation_HonestJohn carPrices = this.ProcessFile1(fullFileName);
 
             Console.WriteLine("*****************************************");
             Console.WriteLine("Dealer Min: " + carPrices.DealerMinPrice);
@@ -667,7 +668,7 @@ namespace Car_Price_Guider
             Console.WriteLine("*****************************************");
             fullFileName = Path.Combine(workingDir, "2003 VAUXHALL ZAFIRA CLUB 16V - 1598cc 5dr MPV Petrol Manual" + ".html");
 
-            CarValuation carPrices1 = this.ProcessFile1(fullFileName);
+            CarValuation_HonestJohn carPrices1 = this.ProcessFile1(fullFileName);
 
             Console.WriteLine("*****************************************");
             Console.WriteLine("Dealer Min: " + carPrices1.DealerMinPrice);
@@ -692,7 +693,7 @@ namespace Car_Price_Guider
             //string fullFileName = Path.Combine(workingDir, "2003 SUBARU IMPREZA GX SPORT AWD - 1994cc 4dr Saloon Petrol Manual" + ".html");
             string fullFileName = Path.Combine(workingDir, textBox8.Text);
 
-            CarValuation carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile(fullFileName);
+            CarValuation_HonestJohn carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile(fullFileName);
 
             Console.WriteLine("*****************************************");
             Console.WriteLine("Dealer Min: " + carPrices.DealerMinPrice);
@@ -727,7 +728,7 @@ namespace Car_Price_Guider
             fullFileName = Path.Combine(workingDir, "2003 VAUXHALL ZAFIRA CLUB 16V - 1598cc 5dr MPV Petrol Manual" + ".html");
 
             //CarValuation carPrices1 = this.ProcessFile1(fullFileName);
-            CarValuation carPrices1 = ValuationParser_HonestJohn.GetValuation_StoredFile(fullFileName);
+            CarValuation_HonestJohn carPrices1 = ValuationParser_HonestJohn.GetValuation_StoredFile(fullFileName);
 
             Console.WriteLine("*****************************************");
             Console.WriteLine("Dealer Min: " + carPrices1.DealerMinPrice);
@@ -794,10 +795,10 @@ namespace Car_Price_Guider
         }
 
 
-        private CarValuation ProcessFile1(string fname)
+        private CarValuation_HonestJohn ProcessFile1(string fname)
         {
 
-            CarValuation returnPrices = new CarValuation();
+            CarValuation_HonestJohn returnPrices = new CarValuation_HonestJohn();
 
             var req1 = (FileWebRequest)WebRequest.Create(fname);
             req1.Method = "GET";
@@ -960,7 +961,7 @@ namespace Car_Price_Guider
             //textBox8.Text = @"Ford Fiesta 2009 1.6 Zetec S Price Guide   Honest John.htm";
             string fullFileName = Path.Combine(workingDir, textBox8.Text);
 
-            CarValuation carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile1(fullFileName);
+            CarValuation_HonestJohn carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile1(fullFileName);
 
             //Console.WriteLine("*****************************************");
             //Console.WriteLine("Dealer Min: " + carPrices.DealerMinPrice);
@@ -1199,7 +1200,7 @@ namespace Car_Price_Guider
             return;
 
             string fullFileName1 = "";
-            CarValuation carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile(fullFileName1);
+            CarValuation_HonestJohn carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile(fullFileName1);
 
 
             txtbox_HJoutput.AppendText("*****************************************\n");
@@ -1270,7 +1271,7 @@ namespace Car_Price_Guider
             foreach (var currFile in Directory.GetFiles(workingDir, "*.html"))
             {
                 //string fullFileName1 = "";
-                CarValuation carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile(currFile);
+                CarValuation_HonestJohn carPrices = ValuationParser_HonestJohn.GetValuation_StoredFile(currFile);
 
                 txtbox_HJoutput.AppendText("*****************************************" + System.Environment.NewLine);
                 txtbox_HJoutput.AppendText("Car: " + Path.GetFileName(currFile) + System.Environment.NewLine);
@@ -1308,6 +1309,7 @@ namespace Car_Price_Guider
             //textBox8.Text = @"Ford Fiesta 2009 1.6 Zetec S Price Guide   Honest John.htm";
             //string fullFileName = Path.Combine(workingDir, textBox8.Text);
 
+            openFileDialog1.Title = "Choose saved Bawtry export file";
             openFileDialog1.InitialDirectory = ".";
             openFileDialog1.FileName = "";
             openFileDialog1.Multiselect = false;
@@ -1396,6 +1398,162 @@ namespace Car_Price_Guider
             } // end foreach
 
             MessageBox.Show("Created " + emailCounter + " emails");
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            List<CarDetails> carValuations = new List<CarDetails>();
+
+            openFileDialog1.Title = "Choose saved CAP Valuations";
+            openFileDialog1.InitialDirectory = ".";
+            openFileDialog1.FileName = "";
+            openFileDialog1.Multiselect = false;
+
+            DialogResult dr = openFileDialog1.ShowDialog(this);
+            if (dr != DialogResult.OK)
+            {
+                return;
+            }
+
+            string fullFileName = openFileDialog1.FileName;
+
+            int lineNo = 1;
+            TextFieldParser parser = new TextFieldParser(fullFileName);
+            parser.TextFieldType = FieldType.Delimited;
+            parser.SetDelimiters(",");
+            while (!parser.EndOfData)
+            {
+                //Processing row
+                string[] fields = parser.ReadFields();
+
+                int col_num_vrm = -1;
+                int col_num_live_clean = -1;
+                int col_num_live_ave = -1;
+                int col_num_live_below = -1;
+                int col_num_live_retail = -1;
+
+                if (lineNo == 1) // header line
+                {
+                    for (int i = 0; i < fields.Length; i++)
+                    {
+                        if (String.Compare(fields[i], "VRM", true) == 0)
+                        {
+                            col_num_vrm = i;
+                        } else if (String.Compare(fields[i], "Live Clean Value", true) == 0)
+                        {
+                            col_num_live_clean = i;
+                        }
+                        else if (String.Compare(fields[i], "Live Average Value", true) == 0)
+                        {
+                            col_num_live_ave = i;
+                        }
+                        else if (String.Compare(fields[i], "Live Below Value", true) == 0)
+                        {
+                            col_num_live_below = i;
+                        }
+                        else if (String.Compare(fields[i], "Live Retail", true) == 0)
+                        {
+                            col_num_live_retail = i;
+                        } // end if-then-else
+                    } // end foreach
+
+
+                    if (col_num_vrm == -1)
+                    {
+                        throw new Exception("Column not found in CSV");
+                    } // end if
+
+                    if (col_num_live_clean == -1)
+                    {
+                        throw new Exception("Column not found in CSV");
+                    } // end if
+
+                    if (col_num_live_ave == -1)
+                    {
+                        throw new Exception("Column not found in CSV");
+                    } // end if
+
+                    if (col_num_live_below == -1)
+                    {
+                        throw new Exception("Column not found in CSV");
+                    } // end if
+
+                    if (col_num_live_retail == -1)
+                    {
+                        throw new Exception("Column not found in CSV");
+                    } // end if
+
+                }
+                else
+                {
+                    string vrm = fields[col_num_vrm];
+
+                    CarValuation_CAP carValuation = new CarValuation_CAP();
+                    
+                    double currVal;
+
+                    if (Double.TryParse(fields[col_num_live_clean], out currVal))
+                    {
+                        carValuation.LivePrice_Clean = currVal;
+                    } // end if
+
+                    if (Double.TryParse(fields[col_num_live_ave], out currVal))
+                    {
+                        carValuation.LivePrice_Ave = currVal;
+                    } // end if
+
+                    if (Double.TryParse(fields[col_num_live_below], out currVal))
+                    {
+                        carValuation.LivePrice_Below = currVal;
+                    } // end if
+
+                    if (Double.TryParse(fields[col_num_live_retail], out currVal))
+                    {
+                        carValuation.LivePrice_Retail = currVal;
+                    } // end if
+
+
+
+                    // now we need to find this car in the car details list
+                    
+                    // check there's only 1 depot with this code in the spreadsheet
+                    List<CarDetails> results = carDetailsToProcess.FindAll(
+                    delegate(CarDetails carDets) { return carDets.RegNo == vrm; });
+                    if (results.Count == 0) // no results found                
+                    {
+                    }
+                    else if (results.Count > 1)
+                    {
+                    }
+                    else
+                    {
+                        results[0].CarValuation_Cap = carValuation;
+                        carValuations.Add(results[0]);
+                    } // end if-then-else
+
+                } // end if-then-else
+
+                lineNo++;
+            }
+            parser.Close();
+
+
+            textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
+            textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
+            textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
+
+            foreach (var currCar in carValuations)
+            {
+                textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
+                foreach (var prop in currCar.GetType().GetProperties())
+                {
+                    textBox_CarCatalogueResults_Bawtry.AppendText(String.Format("{0} = {1}", prop.Name, prop.GetValue(currCar, null)) + System.Environment.NewLine);
+                } // end foreach
+                textBox_CarCatalogueResults_Bawtry.AppendText("Mileage = " + currCar.GetMileage() + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText(currCar.FormatForValuation_CAP_Email() + System.Environment.NewLine);
+                textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
+            } // end foreach
 
         }
 

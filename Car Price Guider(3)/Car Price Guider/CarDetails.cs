@@ -24,6 +24,9 @@ namespace Car_Price_Guider
 
         public string FromCatalogue { get; set; }
 
+        public CarValuation_CAP CarValuation_Cap { get; set; }
+        public CarValuation_HonestJohn CarValuation_HonestJohn { get; set; }
+
         public string Long_Description
         {
             get
