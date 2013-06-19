@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using FolderSelect;
 using Microsoft.VisualBasic.FileIO;
+using System.Reflection;
 
 namespace Car_Price_Guider
 {
@@ -1416,22 +1417,22 @@ namespace Car_Price_Guider
                 return;
             }
 
-            string fullFileName = openFileDialog1.FileName;
+            string fullFileName_CAPValuations = openFileDialog1.FileName;
 
             int lineNo = 1;
-            TextFieldParser parser = new TextFieldParser(fullFileName);
+            int col_num_vrm = -1;
+            int col_num_live_clean = -1;
+            int col_num_live_ave = -1;
+            int col_num_live_below = -1;
+            int col_num_live_retail = -1;
+
+            TextFieldParser parser = new TextFieldParser(fullFileName_CAPValuations);
             parser.TextFieldType = FieldType.Delimited;
             parser.SetDelimiters(",");
             while (!parser.EndOfData)
             {
                 //Processing row
                 string[] fields = parser.ReadFields();
-
-                int col_num_vrm = -1;
-                int col_num_live_clean = -1;
-                int col_num_live_ave = -1;
-                int col_num_live_below = -1;
-                int col_num_live_retail = -1;
 
                 if (lineNo == 1) // header line
                 {
@@ -1552,10 +1553,215 @@ namespace Car_Price_Guider
                 } // end foreach
                 textBox_CarCatalogueResults_Bawtry.AppendText("Mileage = " + currCar.GetMileage() + System.Environment.NewLine);
                 textBox_CarCatalogueResults_Bawtry.AppendText(currCar.FormatForValuation_CAP_Email() + System.Environment.NewLine);
+
+                CarValuation_CAP carValuation = currCar.CarValuation_Cap;
+                
+                //textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
+                foreach (var prop in carValuation.GetType().GetProperties())
+                {
+                    textBox_CarCatalogueResults_Bawtry.AppendText(String.Format("{0} = {1}", prop.Name, prop.GetValue(carValuation, null)) + System.Environment.NewLine);
+                } // end foreach
+                
                 textBox_CarCatalogueResults_Bawtry.AppendText("*****************************************" + System.Environment.NewLine);
             } // end foreach
 
+            this.Refresh();
+
+            saveFileDialog1.Title = "Choose Valuation Report Location";
+            saveFileDialog1.InitialDirectory = ".";
+            saveFileDialog1.FileName = "";
+            saveFileDialog1.Filter = "Excel|*.xls";
+            dr = saveFileDialog1.ShowDialog(this);
+            if (dr != DialogResult.OK)
+            {
+                return;
+            } // end if
+
+            string fullFileName_ValuationsReport = saveFileDialog1.FileName;
+
+            FormatValuationsForExport(carValuations, fullFileName_ValuationsReport);
+
+            MessageBox.Show("Finished");
+
         }
+
+        private void FormatValuationsForExport(List<CarDetails> CarValuations, string fullFileName_ValuationsReport)
+        {
+            const int COL_NUM_LOT_NO = 1;
+            const int ROW_NUM_LOT_NO = 0;
+            
+            const int COL_NUM_DESC = 2;
+
+            const int COL_NUM_VALUATIONS = 3;
+            const int ROW_NUM_VALUE_CLEAN = 1;
+            const int ROW_NUM_VALUE_AVE = 2;
+            const int ROW_NUM_VALUE_BELOW = 3;
+            
+
+            const int COL_NUM_VALUE_RETAIL = 4;
+            const int ROW_NUM_VALUE_RETAIL = 1;
+
+            
+            
+            
+            const int ROWS_TO_SKIP = 4; 
+
+            Excel.Application xl = null;
+            Excel._Workbook wb = null;
+            Excel._Worksheet sheet = null;
+            bool SaveChanges = false;
+            Excel.Range chartRange;
+
+            try
+            {
+                GC.Collect();
+
+                // Create a new instance of Excel from scratch
+                xl = new Excel.Application();
+                xl.Visible = false;
+
+                // Add one workbook to the instance of Excel
+
+                wb = (Excel._Workbook)(xl.Workbooks.Add(Missing.Value));
+
+                // make sure there are exactly 3 worksheets
+                while (wb.Sheets.Count < 3)
+                    wb.Sheets.Add();
+
+                while (wb.Sheets.Count > 3)
+                    ((Excel._Worksheet)(wb.Sheets[1])).Delete();
+
+
+                //**********************************************
+                // now set up unconditional recipients worksheet
+                //**********************************************
+
+                sheet = (Excel._Worksheet)(wb.Sheets[1]);
+                sheet.Select();
+                sheet.Name = "Car Values";
+
+                //sheet.get_Range("A1").Value = "VRM";
+                //sheet.Cells[4, 4] = "test";
+
+                int currRowCounter = 1;
+
+                foreach (var currCar in CarValuations)
+                {
+
+                    sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO] = currCar.Lot_Number;
+
+                    //sheet.get_Range(sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO]).VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_LOT_NO) + (currRowCounter + ROW_NUM_LOT_NO.ToString())).;
+
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO],
+                        sheet.Cells[currRowCounter + ROW_NUM_LOT_NO + ROWS_TO_SKIP - 1, COL_NUM_LOT_NO]].Merge();
+
+                    //sheet.Cells[currRowCounter, COL_NUM_LOT_NO] = currCar.RegNo;
+
+                    sheet.Cells[currRowCounter + ROW_NUM_VALUE_CLEAN, COL_NUM_VALUATIONS] = currCar.CarValuation_Cap.LivePrice_Clean;
+                    sheet.Cells[currRowCounter + ROW_NUM_VALUE_AVE, COL_NUM_VALUATIONS] = currCar.CarValuation_Cap.LivePrice_Ave;
+                    sheet.Cells[currRowCounter + ROW_NUM_VALUE_BELOW, COL_NUM_VALUATIONS] = currCar.CarValuation_Cap.LivePrice_Below;
+
+                    sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL, COL_NUM_VALUE_RETAIL] = currCar.CarValuation_Cap.LivePrice_Retail;
+
+                    //sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL, COL_NUM_VALUE_RETAIL]].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL, COL_NUM_VALUE_RETAIL],
+                        sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL + ROWS_TO_SKIP - 2, COL_NUM_VALUE_RETAIL]].Merge();
+
+                    currRowCounter += ROWS_TO_SKIP; // skip X rows down to take into account merged lines
+
+                } // end foreach
+
+
+                //**************************************
+                // Let loose control of the Excel instance
+                //**************************************
+
+                // ensure the 1st worksheet is selected
+                ((Excel._Worksheet)wb.Sheets[1]).Select();
+
+                xl.Visible = false;
+                xl.UserControl = false;
+
+                // Set a flag saying that all is well and it is ok to save our changes to a file.
+                SaveChanges = true;
+
+                //  Save the file to disk
+                wb.SaveAs(fullFileName_ValuationsReport, Excel.XlFileFormat.xlWorkbookNormal,
+                          null, null, false, false, Excel.XlSaveAsAccessMode.xlExclusive,
+                          false, false, null, null, null);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+            finally
+            {
+
+                try
+                {
+                    // Repeat xl.Visible and xl.UserControl releases just to be sure
+                    // we didn't error out ahead of time.
+
+                    if (xl != null)
+                    {
+                        xl.Visible = false;
+                        xl.UserControl = false;
+
+                        if (wb != null)
+                        {
+                            // Close the document and avoid user prompts to save if our method failed.
+                            wb.Close(SaveChanges, null, null);
+                        }
+
+                        xl.Workbooks.Close();
+                    }
+                }
+                catch { }
+
+                // Gracefully exit out and destroy all COM objects to avoid hanging instances
+                // of Excel.exe whether our method failed or not.
+
+                if (xl != null) { xl.Quit(); }
+
+                if (sheet != null) { Marshal.ReleaseComObject(sheet); }
+                if (wb != null) { Marshal.ReleaseComObject(wb); }
+                if (xl != null) { Marshal.ReleaseComObject(xl); }
+
+                sheet = null;
+                wb = null;
+                xl = null;
+                GC.Collect();
+            } // end try/catch/finally
+
+        }
+
+
+        /// <summary>
+        /// Converts a number into an Excel column name
+        /// ie 27 => AA
+        /// </summary>
+        /// <param name="columnNumber"></param>
+        /// <returns></returns>
+        public static string GetExcelColumnName(int columnNumber)
+        {
+            int dividend = columnNumber;
+            string columnName = String.Empty;
+            int modulo;
+
+            while (dividend > 0)
+            {
+                modulo = (dividend - 1) % 26;
+                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                dividend = (int)((dividend - modulo) / 26);
+            } // end while
+
+            return columnName;
+        }
+
 
     }
 }
