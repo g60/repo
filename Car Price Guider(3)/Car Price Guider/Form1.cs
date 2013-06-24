@@ -1109,6 +1109,7 @@ namespace Car_Price_Guider
             openFileDialog1.Title = "Choose saved Bawtry web page";
             openFileDialog1.InitialDirectory = ".";
             openFileDialog1.FileName = "";
+            openFileDialog1.Filter = "Web Page|*.htm;*.html";
             openFileDialog1.Multiselect = false;
 
             DialogResult dr = openFileDialog1.ShowDialog(this);
@@ -1409,6 +1410,7 @@ namespace Car_Price_Guider
             openFileDialog1.Title = "Choose saved CAP Valuations";
             openFileDialog1.InitialDirectory = ".";
             openFileDialog1.FileName = "";
+            openFileDialog1.Filter = "CSV|*.csv";
             openFileDialog1.Multiselect = false;
 
             DialogResult dr = openFileDialog1.ShowDialog(this);
@@ -1587,22 +1589,38 @@ namespace Car_Price_Guider
 
         private void FormatValuationsForExport(List<CarDetails> CarValuations, string fullFileName_ValuationsReport)
         {
+            const int COL_FIRST_COL_NUM = 1;
+            const int ROW_FIRST_ROW_NUM = 0;
+
             const int COL_NUM_LOT_NO = 1;
             const int ROW_NUM_LOT_NO = 0;
             
             const int COL_NUM_DESC = 2;
+            const int ROW_NUM_DESC = 0;
+
+            const int COL_NUM_REGNO = 2;
+            const int ROW_NUM_REGNO = 1;
 
             const int COL_NUM_VALUATIONS = 3;
             const int ROW_NUM_VALUE_CLEAN = 1;
             const int ROW_NUM_VALUE_AVE = 2;
             const int ROW_NUM_VALUE_BELOW = 3;
             
-
             const int COL_NUM_VALUE_RETAIL = 4;
             const int ROW_NUM_VALUE_RETAIL = 1;
 
-            
-            
+            const int COL_NUM_PROFIT = 5;
+            const int ROW_NUM_PROFIT_CLEAN = 1;
+            const int ROW_NUM_PROFIT_AVE = 2;
+            const int ROW_NUM_PROFIT_BELOW = 3;
+
+            const int COL_NUM_MARGIN = 6;
+            const int ROW_NUM_MARGIN_CLEAN = 1;
+            const int ROW_NUM_MARGIN_AVE = 2;
+            const int ROW_NUM_MARGIN_BELOW = 3;
+
+            const int COL_LAST_COL_NUM = 6;
+            const int ROW_LAST_ROW_NUM = 4;
             
             const int ROWS_TO_SKIP = 4; 
 
@@ -1644,33 +1662,116 @@ namespace Car_Price_Guider
                 //sheet.Cells[4, 4] = "test";
 
                 int currRowCounter = 1;
+                int numRecsProcessed = 0;
 
+                                
                 foreach (var currCar in CarValuations)
                 {
+                    // add page break after every 7 cars
+                    if (currRowCounter > 1 && numRecsProcessed % 7 == 0)
+                    {
+                        sheet.HPageBreaks.Add(sheet.get_Range("A" + currRowCounter.ToString()));
+                    } // end if
 
                     sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO] = currCar.Lot_Number;
 
-                    //sheet.get_Range(sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO]).VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-
-                    sheet.get_Range(GetExcelColumnName(COL_NUM_LOT_NO) + (currRowCounter + ROW_NUM_LOT_NO.ToString())).;
-
+                    // merge lot number cells
                     sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO],
                         sheet.Cells[currRowCounter + ROW_NUM_LOT_NO + ROWS_TO_SKIP - 1, COL_NUM_LOT_NO]].Merge();
 
-                    //sheet.Cells[currRowCounter, COL_NUM_LOT_NO] = currCar.RegNo;
+                    // horizontally align lot number cells
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO],
+                        sheet.Cells[currRowCounter + ROW_NUM_LOT_NO + ROWS_TO_SKIP - 1, COL_NUM_LOT_NO]].HorizontalAlignment = Excel.XlVAlign.xlVAlignCenter;
 
+                    // vertically align lot number cells
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_LOT_NO, COL_NUM_LOT_NO],
+                        sheet.Cells[currRowCounter + ROW_NUM_LOT_NO + ROWS_TO_SKIP - 1, COL_NUM_LOT_NO]].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+                    sheet.Cells[currRowCounter + ROW_NUM_DESC, COL_NUM_DESC] = currCar.Long_Description;
+                    
+                    // merge description cells
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_DESC, COL_NUM_DESC],
+                        sheet.Cells[currRowCounter + ROW_NUM_DESC, COL_LAST_COL_NUM]].Merge();
+
+                    // vertically align description cells
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_DESC, COL_NUM_DESC],
+                        sheet.Cells[currRowCounter + ROW_NUM_DESC, COL_LAST_COL_NUM]].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+                    // wrap description cell text
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_DESC, COL_NUM_DESC],
+                        sheet.Cells[currRowCounter + ROW_NUM_DESC, COL_LAST_COL_NUM]].WrapText = true;
+
+                    // add reg no 
+                    sheet.Cells[currRowCounter + ROW_NUM_REGNO, COL_NUM_REGNO] = currCar.RegNo;
+
+                    // add valuations
                     sheet.Cells[currRowCounter + ROW_NUM_VALUE_CLEAN, COL_NUM_VALUATIONS] = currCar.CarValuation_Cap.LivePrice_Clean;
                     sheet.Cells[currRowCounter + ROW_NUM_VALUE_AVE, COL_NUM_VALUATIONS] = currCar.CarValuation_Cap.LivePrice_Ave;
                     sheet.Cells[currRowCounter + ROW_NUM_VALUE_BELOW, COL_NUM_VALUATIONS] = currCar.CarValuation_Cap.LivePrice_Below;
 
+                    // add retail valuation
                     sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL, COL_NUM_VALUE_RETAIL] = currCar.CarValuation_Cap.LivePrice_Retail;
 
-                    //sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL, COL_NUM_VALUE_RETAIL]].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
-
+                    // merge retail column
                     sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL, COL_NUM_VALUE_RETAIL],
                         sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL + ROWS_TO_SKIP - 2, COL_NUM_VALUE_RETAIL]].Merge();
 
+                    // vertical align the retail column
+                    sheet.Range[sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL, COL_NUM_VALUE_RETAIL],
+                        sheet.Cells[currRowCounter + ROW_NUM_VALUE_RETAIL + ROWS_TO_SKIP - 2, COL_NUM_VALUE_RETAIL]].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+
+                    // add profit amount column
+                    sheet.Cells[currRowCounter + ROW_NUM_PROFIT_CLEAN, COL_NUM_PROFIT] = string.Format("=${0}{1}-{2}{3}", GetExcelColumnName(COL_NUM_VALUE_RETAIL), (currRowCounter + ROW_NUM_VALUE_RETAIL).ToString(), GetExcelColumnName(COL_NUM_VALUATIONS), (currRowCounter + ROW_NUM_VALUE_CLEAN).ToString());
+                    sheet.Cells[currRowCounter + ROW_NUM_PROFIT_AVE, COL_NUM_PROFIT] = string.Format("=${0}{1}-{2}{3}", GetExcelColumnName(COL_NUM_VALUE_RETAIL), (currRowCounter + ROW_NUM_VALUE_RETAIL).ToString(), GetExcelColumnName(COL_NUM_VALUATIONS), (currRowCounter + ROW_NUM_VALUE_AVE).ToString());
+                    sheet.Cells[currRowCounter + ROW_NUM_PROFIT_BELOW, COL_NUM_PROFIT] = string.Format("=${0}{1}-{2}{3}", GetExcelColumnName(COL_NUM_VALUE_RETAIL), (currRowCounter + ROW_NUM_VALUE_RETAIL).ToString(), GetExcelColumnName(COL_NUM_VALUATIONS), (currRowCounter + ROW_NUM_VALUE_BELOW).ToString());
+
+                    // add profit margin column
+                    sheet.Cells[currRowCounter + ROW_NUM_MARGIN_CLEAN, COL_NUM_MARGIN] = String.Format("=({0}{1}/{2}{3})", GetExcelColumnName(COL_NUM_PROFIT), (currRowCounter + ROW_NUM_PROFIT_CLEAN).ToString(), GetExcelColumnName(COL_NUM_VALUATIONS), (currRowCounter + ROW_NUM_PROFIT_CLEAN).ToString());
+                    sheet.Cells[currRowCounter + ROW_NUM_MARGIN_AVE, COL_NUM_MARGIN] = String.Format("=({0}{1}/{2}{3})", GetExcelColumnName(COL_NUM_PROFIT), (currRowCounter + ROW_NUM_PROFIT_AVE).ToString(), GetExcelColumnName(COL_NUM_VALUATIONS), (currRowCounter + ROW_NUM_PROFIT_AVE).ToString());
+                    sheet.Cells[currRowCounter + ROW_NUM_MARGIN_BELOW, COL_NUM_MARGIN] = String.Format("=({0}{1}/{2}{3})", GetExcelColumnName(COL_NUM_PROFIT), (currRowCounter + ROW_NUM_PROFIT_BELOW).ToString(), GetExcelColumnName(COL_NUM_VALUATIONS), (currRowCounter + ROW_NUM_PROFIT_BELOW).ToString());
+                    
+                    // add grid lines
+                    chartRange = sheet.get_Range(GetExcelColumnName(COL_FIRST_COL_NUM) + (currRowCounter + ROW_FIRST_ROW_NUM).ToString(), GetExcelColumnName(COL_LAST_COL_NUM) + (currRowCounter + ROW_LAST_ROW_NUM - 1).ToString());
+                    chartRange.Cells.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                    chartRange.Cells.Borders.Color = ColorTranslator.ToOle(Color.Black);
+                    chartRange.Borders[Excel.XlBordersIndex.xlEdgeLeft].Weight = Excel.XlBorderWeight.xlThick;
+                    chartRange.Borders[Excel.XlBordersIndex.xlEdgeRight].Weight = Excel.XlBorderWeight.xlThick;
+                    chartRange.Borders[Excel.XlBordersIndex.xlEdgeTop].Weight = Excel.XlBorderWeight.xlThick;
+                    chartRange.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThick;
+                    
+                    // increase height of description row
+                    sheet.get_Range("A" + (currRowCounter + ROW_FIRST_ROW_NUM).ToString()).RowHeight = 50;
+
+                    // increase width of reg no column
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_REGNO) + (currRowCounter + ROW_FIRST_ROW_NUM).ToString()).ColumnWidth = 15;
+
+                    // increase width of valuations column
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_VALUATIONS) + (currRowCounter + ROW_FIRST_ROW_NUM).ToString()).ColumnWidth = 15;
+
+                    // set format of valuation columns to currency
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_VALUATIONS) + (currRowCounter + ROW_NUM_VALUE_CLEAN).ToString()).NumberFormat = "£#,###";
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_VALUATIONS) + (currRowCounter + ROW_NUM_VALUE_AVE).ToString()).NumberFormat = "£#,###";
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_VALUATIONS) + (currRowCounter + ROW_NUM_VALUE_BELOW).ToString()).NumberFormat = "£#,###";
+
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_VALUE_RETAIL) + (currRowCounter + ROW_NUM_VALUE_RETAIL).ToString()).NumberFormat = "£#,###";
+
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_PROFIT) + (currRowCounter + ROW_NUM_PROFIT_CLEAN).ToString()).NumberFormat = "£#,###";
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_PROFIT) + (currRowCounter + ROW_NUM_PROFIT_AVE).ToString()).NumberFormat = "£#,###";
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_PROFIT) + (currRowCounter + ROW_NUM_PROFIT_BELOW).ToString()).NumberFormat = "£#,###";
+
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_MARGIN) + (currRowCounter + ROW_NUM_MARGIN_CLEAN).ToString()).NumberFormat = "###%";
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_MARGIN) + (currRowCounter + ROW_NUM_MARGIN_AVE).ToString()).NumberFormat = "###%";
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_MARGIN) + (currRowCounter + ROW_NUM_MARGIN_BELOW).ToString()).NumberFormat = "###%";
+
+                    // increase width of retail valuations column
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_VALUE_RETAIL) + (currRowCounter + ROW_FIRST_ROW_NUM).ToString()).ColumnWidth = 15;
+
+                    // increase width of profit calcs column
+                    sheet.get_Range(GetExcelColumnName(COL_NUM_PROFIT) + (currRowCounter + ROW_FIRST_ROW_NUM).ToString()).ColumnWidth = 15;
+
                     currRowCounter += ROWS_TO_SKIP; // skip X rows down to take into account merged lines
+
+                    numRecsProcessed++;
 
                 } // end foreach
 
